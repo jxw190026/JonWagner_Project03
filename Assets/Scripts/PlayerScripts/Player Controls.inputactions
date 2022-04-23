@@ -200,6 +200,90 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "Parry",
+            "id": "3360f9b3-d21c-4d41-a32c-5140bdfb5266",
+            "actions": [
+                {
+                    "name": "Blocking",
+                    "type": "Button",
+                    "id": "6c0b0e22-0cae-49bf-ae11-1a664fbc7a57",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "BlockingRelease",
+                    "type": "Button",
+                    "id": "d88c7356-a24d-48ff-aab6-83cfc671772c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "06f7b61b-4dbf-49a2-a5fe-a54f70b8f78f",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "Press(pressPoint=0.5,behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BlockingRelease",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "18652b75-b6c6-4e12-ab87-791a1405ac7b",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Blocking",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Debug",
+            "id": "864d9f44-1d33-4714-91ff-c08e10adfef0",
+            "actions": [
+                {
+                    "name": "Hit",
+                    "type": "Button",
+                    "id": "6a37492f-a6e7-4d9d-b9d5-903e1a52d17c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "018641af-4a3e-45af-a44d-856d7bd56347",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Hit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8ea9b028-055b-435f-ba6f-917495dcd296",
+                    "path": "<Keyboard>/h",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Hit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

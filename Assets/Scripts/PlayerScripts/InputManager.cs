@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
     PlayerControls playerControls;
     AnimatorManager _animaiton;
+    PlayerBlockParry _parry;
+    DamageController _damage;
 
     public Vector2 movementInput;
     public Vector2 cameraInput;
@@ -17,9 +20,20 @@ public class InputManager : MonoBehaviour
     public float verticalInput;
     public float horizontalInput;
 
+    public bool ParryInput;
+    private bool _parryInputRelease;
+    private bool _parryInput;
+    private InputAction Parry;
+    private InputAction _parryRelease;
+    private InputAction _hitDebug;
+
+
+
     private void Awake()
     {
         _animaiton = GetComponent<AnimatorManager>();
+        _parry = GetComponent<PlayerBlockParry>();
+        _damage = GetComponent<DamageController>();
     }
 
     private void OnEnable()
@@ -30,14 +44,30 @@ public class InputManager : MonoBehaviour
             //add vector2 values to inputs
             playerControls.PlayerMovenemt.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
             playerControls.PlayerMovenemt.Camera.performed += i => cameraInput = i.ReadValue<Vector2>();
+            //playerControls.Parry.Blocking.performed += i => _parryInput = i.performed;
+            //playerControls.Parry.BlockingRelease.performed += i => _parryInputRelease = i.performed; 
         }
 
         playerControls.Enable();
+        Parry = playerControls.Parry.Blocking;
+        Parry.Enable();
+        Parry.performed += BlockingInput;
+
+        _parryRelease = playerControls.Parry.BlockingRelease;
+        _parryRelease.Enable();
+        _parryRelease.performed += BlockingRelease;
+
+        _hitDebug = playerControls.Debug.Hit;
+        _hitDebug.Enable();
+        _hitDebug.performed += hitDebuging;
     }
 
     private void OnDisable()
     {
         playerControls.Disable();
+        Parry.Disable();
+        _parryRelease.Disable();
+        _hitDebug.Disable();
     }
 
     public void HandleAllInputs()
@@ -62,8 +92,31 @@ public class InputManager : MonoBehaviour
         _animaiton.UpdateAnimator(0, _moveAmount);
 
 
+    }
+
+    private void Update()
+    {
+        //BlockingInput();
+    }
+
+    private void BlockingInput(InputAction.CallbackContext context)
+    {
+        Debug.Log("blocking");
+        ParryInput = true;
+        
+    }
+
+    private void BlockingRelease(InputAction.CallbackContext context)
+    {
+        Debug.Log("blocking release");
+        ParryInput = false;
     }    
 
+    private void hitDebuging(InputAction.CallbackContext context)
+    {
+        Debug.Log("hit");
+        _damage.PlayerHit = true;
+    }
 
 
 }

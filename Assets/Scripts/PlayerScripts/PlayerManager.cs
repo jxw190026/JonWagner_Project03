@@ -7,25 +7,36 @@ public class PlayerManager : MonoBehaviour
     InputManager inputManager;
     CameraManager cameraManager;
     PlayerLocalMotion playerLocalMotion;
+    PlayerBlockParry _parry;
+    DamageController _damage;
 
     private void Awake()
     {
         inputManager = GetComponent<InputManager>();
         playerLocalMotion = GetComponent<PlayerLocalMotion>();
         cameraManager = FindObjectOfType<CameraManager>();
+        _parry = GetComponent<PlayerBlockParry>();
+        _damage = GetComponent<DamageController>();
 
     }
     
     private void Update()
     {
-        inputManager.HandleAllInputs();
+
+            inputManager.HandleAllInputs();            
+        
+
 
     }
 
     private void FixedUpdate()
     {
-        //when working with rigidboyd and movement should be in fixed update
-        playerLocalMotion.HandleAllMovement();
+        if (_parry.PlayerBlocking == false && _damage.PlayerHit == false)
+        { 
+            //when working with rigidboyd and movement should be in fixed update
+            playerLocalMotion.HandleAllMovement();        
+        }
+
 
 
     }
