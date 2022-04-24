@@ -10,9 +10,13 @@ public class AnimatorManager : MonoBehaviour
     PlayerBlockParry _parry;
     //find damage controler script for the hit bool
     DamageController _damage;
+    //the parry meter manager, use to trigger the stagger animation
+    ParryMeterController _parryMeter;
 
     int _horizontal;
     int _vertical;
+
+    bool _stagger = false;
 
     private void Awake()
     {
@@ -21,6 +25,7 @@ public class AnimatorManager : MonoBehaviour
         _vertical = Animator.StringToHash("Vertical");
         _parry = GetComponent<PlayerBlockParry>();
         _damage = GetComponent<DamageController>();
+        _parryMeter = GetComponent<ParryMeterController>();
     }
 
 
@@ -39,7 +44,25 @@ public class AnimatorManager : MonoBehaviour
         _animator.SetBool("Block", _parry.PlayerBlocking);
         _animator.SetBool("Hit", _damage.PlayerHit);
         _animator.SetFloat("Parry", _parry.ParryNum);
+        _animator.SetBool("Stagger", _stagger);
+
+        QueStagger();
         
 
+    }
+
+    public void ResetStagger()
+    {
+        _stagger = false;
+        _parryMeter.PostureMeter = 0;
+    }
+
+    private void QueStagger()
+    {
+        //if the stagger meter from the ParryMeterController is full then que the animation through the stagger bool
+        if (_parryMeter.PostureMeter == 10)
+        {
+            _stagger = true;
+        }
     }
 }

@@ -40,10 +40,12 @@ public class DamageController : MonoBehaviour
                 {
                     //if _parry is < than 1 then the player is blocking and recives no damage
                     _health.CurrentHealth -= other.gameObject.GetComponent<DamageAmount>()._damageAmount;
+                    other.gameObject.transform.tag = "Untagged";
                 }
 
                 //player hit = true to que animation
                 PlayerHit = true;
+
 
             }
         }

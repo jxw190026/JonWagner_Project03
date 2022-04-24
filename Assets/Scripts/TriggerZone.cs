@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class TriggerZone : MonoBehaviour
 {
-    public bool TriggerActivated = false;
+    public bool TriggerEnterActivated = false;
+    public bool TriggerStayActivated = false;
     public string ObjectTag = null;
     private void OnTriggerEnter(Collider other)
     {
@@ -12,10 +13,26 @@ public class TriggerZone : MonoBehaviour
         {
             if (other.gameObject.CompareTag(ObjectTag))
             {
-                TriggerActivated = true;
+                TriggerEnterActivated = true;
             }else
             {
-                TriggerActivated = false;
+                TriggerEnterActivated = false;
+            }
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (ObjectTag != null)
+        {
+            if (other.gameObject.CompareTag(ObjectTag))
+            {
+                TriggerStayActivated = true;
+            }
+            else
+            {
+                TriggerStayActivated = false;
+                Debug.Log("Trigger is not activated" + gameObject.transform.name);
             }
         }
     }

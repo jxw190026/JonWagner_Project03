@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PlayerBlockParry : MonoBehaviour
 {
     // Start is called before the first frame update
-
+    
     public float ParryNum = 0f;
 
     public bool PlayerBlocking = false;

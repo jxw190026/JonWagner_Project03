@@ -9,11 +9,14 @@ public class EnemyController : MonoBehaviour
 
     Animator _animation;
 
+    PlayerBlockParry _player;
+
     //animation bools
     
     void Awake()
     {
         _animation = GetComponent<Animator>();
+        _player = FindObjectOfType<PlayerBlockParry>();
     }
 
     // Update is called once per frame
@@ -35,13 +38,21 @@ public class EnemyController : MonoBehaviour
 
     private void AttackTriggerZone()
     {
-        _animation.SetBool("AttackZone", _attackTriggerZone.GetComponent<TriggerZone>().TriggerActivated);
+        _animation.SetBool("AttackZone", _attackTriggerZone.GetComponent<TriggerZone>().TriggerStayActivated);
     }
 
     public void ParryReset()
     {
         //reset the parry bool so the enemy recovers from the parry and attacks again
         _EnemyWeapon.GetComponent<EnemyWeaponController>().parrySuccessful = false;
+    }
+
+    public void PlayerParryCheck()
+    {
+        if (_player.ParryNum < 2)
+        {
+            _player.ParryNum = 2;
+        }
     }
 
 

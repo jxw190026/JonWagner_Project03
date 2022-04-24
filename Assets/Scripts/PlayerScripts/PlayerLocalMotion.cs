@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerLocalMotion : MonoBehaviour
 {
     InputManager inputManager;
+    PlayerManager _playerManager;
 
 
 
@@ -21,13 +22,28 @@ public class PlayerLocalMotion : MonoBehaviour
         inputManager = GetComponent<InputManager>();
         _rigid = GetComponent<Rigidbody>();
         cameraObject = Camera.main.transform;
+        _playerManager = GetComponent<PlayerManager>();
     }
-    
+
+    private void Update()
+    {
+        if (_playerManager._noWalk == true)
+        {
+            movementSpeed = 0;
+
+        }else
+        {
+            movementSpeed = 7;
+        }
+    }
+
     public void HandleAllMovement()
     {
         HandleMovement();
         HandleRotation();
     }
+
+
     
     private void HandleMovement()
     {

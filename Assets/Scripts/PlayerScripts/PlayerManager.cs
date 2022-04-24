@@ -10,6 +10,8 @@ public class PlayerManager : MonoBehaviour
     PlayerBlockParry _parry;
     DamageController _damage;
 
+    public bool _noWalk = false;
+
     private void Awake()
     {
         inputManager = GetComponent<InputManager>();
@@ -25,16 +27,24 @@ public class PlayerManager : MonoBehaviour
 
             inputManager.HandleAllInputs();            
         
+        if (_parry.PlayerBlocking == true || _damage.PlayerHit == true)
+        {
+            _noWalk = true;
 
+        }
+        else
+        {
+            _noWalk = false;
+        }
 
     }
 
     private void FixedUpdate()
     {
-        if (_parry.PlayerBlocking == false && _damage.PlayerHit == false)
+        if (_noWalk == false)
         { 
             //when working with rigidboyd and movement should be in fixed update
-            playerLocalMotion.HandleAllMovement();        
+            playerLocalMotion.HandleAllMovement();      
         }
 
 

@@ -5,9 +5,15 @@ using UnityEngine;
 public class EnemyWeaponController : MonoBehaviour
 {
 
+    [SerializeField] GameObject _EnemyGO;
+
     public bool parrySuccessful = false;
     //call this public void when to change enemy weapon
-    
+
+    private void Awake()
+    {
+
+    }
     private void OnTriggerEnter(Collider other)
     {
         // if the sword hit box goes over the player and the parry number is greater than 1 than it is a successful parry
@@ -16,8 +22,15 @@ public class EnemyWeaponController : MonoBehaviour
         {
             if (other.gameObject.GetComponent<PlayerBlockParry>().ParryNum > 1)
             {
+
+                _EnemyGO.GetComponent<EnemyPostureSystem>().EnemyPosture += other.gameObject.GetComponent<PlayerBlockParry>().ParryNum;
+                _EnemyGO.GetComponent<EnemyController>().PlayerParryCheck();
+                if (_EnemyGO.GetComponent<EnemyPostureSystem>().stagger == false)
+                {
                 parrySuccessful = true;
+                }
             }
+
         }
     }
 
