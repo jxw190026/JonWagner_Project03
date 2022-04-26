@@ -6,22 +6,35 @@ public class DamageController : MonoBehaviour
 {
     [SerializeField] string _damageTag = "Enemy_dmg";
     [SerializeField] BoxCollider _hitBox;
+    [SerializeField] AudioClip[] _hitSFX;
+    [SerializeField] AudioClip _StaggerSFX;
 
     HealthController _health;
     PlayerBlockParry _parry;
+    AudioSource _audio;
+    AnimatorManager _animation;
     
     public bool PlayerHit = false;
+    //sound randimizer
+    int _sounds = 0;
 
     void Awake()
     {
         _health = GetComponent<HealthController>();
         _parry = GetComponent<PlayerBlockParry>();
+        _audio = GetComponent<AudioSource>();
+        _animation = GetComponent<AnimatorManager>();
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        
+        _sounds = Random.Range(0, 2);
+    }
+
+    private void Update()
+    {
+
     }
 
     public void hitReset()
@@ -49,5 +62,22 @@ public class DamageController : MonoBehaviour
 
             }
         }
+    }
+
+    public void hitSound(int SoundNum)
+    {
+        if (SoundNum == 1)
+        {
+        _audio.clip = _hitSFX[_sounds];
+            //_audio.PlayOneShot(_hitSFX[_sounds]);
+            _audio.Play();
+        }
+
+        if (SoundNum == 2)
+        {
+            _audio.clip = _StaggerSFX;
+            _audio.Play();
+        }
+
     }
 }

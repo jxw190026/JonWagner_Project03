@@ -6,13 +6,14 @@ public class EnemyWeaponController : MonoBehaviour
 {
 
     [SerializeField] GameObject _EnemyGO;
-
+    [SerializeField] GameObject _player;
     public bool parrySuccessful = false;
     //call this public void when to change enemy weapon
 
+    AnimatorManager _playerAnimaiton;
     private void Awake()
     {
-
+        _playerAnimaiton = _player.GetComponent<AnimatorManager>();
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -29,6 +30,7 @@ public class EnemyWeaponController : MonoBehaviour
                 {
                 parrySuccessful = true;
                 }
+                _playerAnimaiton.queParryCheck();
             }
 
         }

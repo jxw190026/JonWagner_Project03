@@ -297,6 +297,52 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""SceneReset"",
+            ""id"": ""09058c1b-f92e-4f07-926b-159787bc8959"",
+            ""actions"": [
+                {
+                    ""name"": ""Escape"",
+                    ""type"": ""Button"",
+                    ""id"": ""0060a1b8-c2ab-4fff-9686-049548cc1959"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Reset"",
+                    ""type"": ""Button"",
+                    ""id"": ""244652f3-424e-4cdb-8a5a-74dca8aca68a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""50da76e4-110d-4526-bc0d-7d84fa6765d1"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Escape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d83a7a15-97d2-4477-8572-d1049bbdf8f5"",
+                    ""path"": ""<Keyboard>/backspace"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reset"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -312,6 +358,10 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_Hit = m_Debug.FindAction("Hit", throwIfNotFound: true);
+        // SceneReset
+        m_SceneReset = asset.FindActionMap("SceneReset", throwIfNotFound: true);
+        m_SceneReset_Escape = m_SceneReset.FindAction("Escape", throwIfNotFound: true);
+        m_SceneReset_Reset = m_SceneReset.FindAction("Reset", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -472,6 +522,47 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         }
     }
     public DebugActions @Debug => new DebugActions(this);
+
+    // SceneReset
+    private readonly InputActionMap m_SceneReset;
+    private ISceneResetActions m_SceneResetActionsCallbackInterface;
+    private readonly InputAction m_SceneReset_Escape;
+    private readonly InputAction m_SceneReset_Reset;
+    public struct SceneResetActions
+    {
+        private @PlayerControls m_Wrapper;
+        public SceneResetActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Escape => m_Wrapper.m_SceneReset_Escape;
+        public InputAction @Reset => m_Wrapper.m_SceneReset_Reset;
+        public InputActionMap Get() { return m_Wrapper.m_SceneReset; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SceneResetActions set) { return set.Get(); }
+        public void SetCallbacks(ISceneResetActions instance)
+        {
+            if (m_Wrapper.m_SceneResetActionsCallbackInterface != null)
+            {
+                @Escape.started -= m_Wrapper.m_SceneResetActionsCallbackInterface.OnEscape;
+                @Escape.performed -= m_Wrapper.m_SceneResetActionsCallbackInterface.OnEscape;
+                @Escape.canceled -= m_Wrapper.m_SceneResetActionsCallbackInterface.OnEscape;
+                @Reset.started -= m_Wrapper.m_SceneResetActionsCallbackInterface.OnReset;
+                @Reset.performed -= m_Wrapper.m_SceneResetActionsCallbackInterface.OnReset;
+                @Reset.canceled -= m_Wrapper.m_SceneResetActionsCallbackInterface.OnReset;
+            }
+            m_Wrapper.m_SceneResetActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Escape.started += instance.OnEscape;
+                @Escape.performed += instance.OnEscape;
+                @Escape.canceled += instance.OnEscape;
+                @Reset.started += instance.OnReset;
+                @Reset.performed += instance.OnReset;
+                @Reset.canceled += instance.OnReset;
+            }
+        }
+    }
+    public SceneResetActions @SceneReset => new SceneResetActions(this);
     public interface IPlayerMovenemtActions
     {
         void OnMovement(InputAction.CallbackContext context);
@@ -485,5 +576,10 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     public interface IDebugActions
     {
         void OnHit(InputAction.CallbackContext context);
+    }
+    public interface ISceneResetActions
+    {
+        void OnEscape(InputAction.CallbackContext context);
+        void OnReset(InputAction.CallbackContext context);
     }
 }

@@ -6,6 +6,9 @@ using UnityEngine;
 public class PlayerBlockParry : MonoBehaviour
 {
     // Start is called before the first frame update
+    [SerializeField] GameObject _parryFX;
+    [SerializeField] Transform _parryFxTransform;
+    [SerializeField] GameObject _blockFX;
     
     public float ParryNum = 0f;
 
@@ -58,5 +61,23 @@ public class PlayerBlockParry : MonoBehaviour
 
         
 
+    }
+
+    public void SpawnParryFX()
+    {
+        if (_parryFX != null)
+        {
+        Instantiate(_parryFX, _parryFxTransform.position, _parryFxTransform.rotation);
+
+        }
+
+    }
+    public void SpawnBlockFX()
+    {
+        if (_blockFX != null)
+        {
+            Instantiate(_blockFX, _parryFxTransform.position, _parryFxTransform.rotation);
+
+        }
     }
 }

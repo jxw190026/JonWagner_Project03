@@ -22,7 +22,7 @@ public class ParryMeterController : MonoBehaviour
 
 
     float _parryCoolDown = 0f;
-    float _cooldownTime = 1f;
+    float _cooldownSpeed = 1f;
     void Awake()
     {
        //at the start of the scene, this script will check if it is attacked to the player
@@ -61,7 +61,7 @@ public class ParryMeterController : MonoBehaviour
         }
         if (_parryCoolDown < 0.1 && PostureMeter != 10)
         {
-            _ParrySliderL.value -= Time.deltaTime * _cooldownTime;
+            PostureMeter -= Time.deltaTime * _cooldownSpeed;
         }
 
         PlayerParryController();

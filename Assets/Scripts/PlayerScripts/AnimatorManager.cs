@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AnimatorManager : MonoBehaviour
 {
+
+    
     Animator _animator;
 
     //use the parry script to find the bools wether the player is parrying
@@ -12,11 +14,13 @@ public class AnimatorManager : MonoBehaviour
     DamageController _damage;
     //the parry meter manager, use to trigger the stagger animation
     ParryMeterController _parryMeter;
+    //audio souce
+    AudioSource _audio;
 
     int _horizontal;
     int _vertical;
 
-    bool _stagger = false;
+   public bool _stagger = false;
 
     private void Awake()
     {
@@ -26,6 +30,7 @@ public class AnimatorManager : MonoBehaviour
         _parry = GetComponent<PlayerBlockParry>();
         _damage = GetComponent<DamageController>();
         _parryMeter = GetComponent<ParryMeterController>();
+        _audio = GetComponent<AudioSource>();
     }
 
 
@@ -65,4 +70,20 @@ public class AnimatorManager : MonoBehaviour
             _stagger = true;
         }
     }
+
+    public void queParryCheck()
+    {
+        if(_parry.ParryNum < 2)
+        {
+            _parry.ParryNum = 2;
+        }
+
+        if (_damage.PlayerHit == false)
+        {
+            _damage.PlayerHit = true;
+        }
+            //_animator.Play("PlayerBLOCK PARRY");
+    }
+
+
 }

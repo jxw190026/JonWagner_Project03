@@ -6,17 +6,28 @@ public class EnemyController : MonoBehaviour
 {
     [SerializeField] GameObject _EnemyWeapon;
     [SerializeField] GameObject _attackTriggerZone;
+    [SerializeField] AudioClip[] _parrySFX;
+    [SerializeField] AudioClip _staggerSFX;
+
 
     Animator _animation;
+    AudioSource _audio;
 
     PlayerBlockParry _player;
+    AnimatorManager _playerAnimaiton;
+    EnemyPostureSystem _postureSystem;
 
     //animation bools
-    
+
+    //randimizer int
+    int _sounds = 0;
     void Awake()
     {
         _animation = GetComponent<Animator>();
         _player = FindObjectOfType<PlayerBlockParry>();
+        _playerAnimaiton = FindObjectOfType<AnimatorManager>();
+        _audio = GetComponent<AudioSource>();
+        _postureSystem = GetComponent<EnemyPostureSystem>();
     }
 
     // Update is called once per frame
@@ -24,6 +35,13 @@ public class EnemyController : MonoBehaviour
     {
         SuccessfulParry();
         AttackTriggerZone();
+
+
+
+    }
+    private void FixedUpdate()
+    {
+        _sounds = Random.Range(0, 2);
     }
 
     public void WeaponTagChange(string tagName)
@@ -54,6 +72,21 @@ public class EnemyController : MonoBehaviour
             _player.ParryNum = 2;
         }
     }
+
+    public void parrySound()
+    {
+       
+            _audio.clip = _parrySFX[_sounds];
+            _audio.Play();
+
+        if (_postureSystem.stagger == true)
+        {
+            _audio.clip = _staggerSFX;
+            _audio.Play();
+        }
+        
+    }
+
 
 
 }
