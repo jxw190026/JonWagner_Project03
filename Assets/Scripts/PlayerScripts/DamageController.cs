@@ -8,6 +8,8 @@ public class DamageController : MonoBehaviour
     [SerializeField] BoxCollider _hitBox;
     [SerializeField] AudioClip[] _hitSFX;
     [SerializeField] AudioClip _StaggerSFX;
+    [SerializeField] AudioClip[] _damageSFX;
+
 
     HealthController _health;
     PlayerBlockParry _parry;
@@ -54,6 +56,7 @@ public class DamageController : MonoBehaviour
                     //if _parry is < than 1 then the player is blocking and recives no damage
                     _health.CurrentHealth -= other.gameObject.GetComponent<DamageAmount>()._damageAmount;
                     other.gameObject.transform.tag = "Untagged";
+                    hitSound(0);
                 }
 
                 //player hit = true to que animation
@@ -62,6 +65,8 @@ public class DamageController : MonoBehaviour
 
             }
         }
+
+
     }
 
     public void hitSound(int SoundNum)
@@ -69,13 +74,19 @@ public class DamageController : MonoBehaviour
         if (SoundNum == 1)
         {
         _audio.clip = _hitSFX[_sounds];
-            //_audio.PlayOneShot(_hitSFX[_sounds]);
+
             _audio.Play();
         }
 
         if (SoundNum == 2)
         {
             _audio.clip = _StaggerSFX;
+            _audio.Play();
+        }
+
+        if (SoundNum == 0)
+        {
+            _audio.clip = _damageSFX[_sounds];
             _audio.Play();
         }
 

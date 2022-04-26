@@ -271,6 +271,22 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""CameraMove"",
+                    ""type"": ""Button"",
+                    ""id"": ""6cebf60c-0d7f-4f42-8550-833c0006db03"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""CameraReset"",
+                    ""type"": ""Button"",
+                    ""id"": ""13b7f0b5-f870-4e6e-81f5-024bd3746022"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -293,6 +309,28 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Hit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""580a8f93-f19a-401c-943e-c04c2c2e0cf2"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b9fb55a3-c9e4-4149-8acf-0d85af6e6de5"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CameraReset"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -358,6 +396,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         // Debug
         m_Debug = asset.FindActionMap("Debug", throwIfNotFound: true);
         m_Debug_Hit = m_Debug.FindAction("Hit", throwIfNotFound: true);
+        m_Debug_CameraMove = m_Debug.FindAction("CameraMove", throwIfNotFound: true);
+        m_Debug_CameraReset = m_Debug.FindAction("CameraReset", throwIfNotFound: true);
         // SceneReset
         m_SceneReset = asset.FindActionMap("SceneReset", throwIfNotFound: true);
         m_SceneReset_Escape = m_SceneReset.FindAction("Escape", throwIfNotFound: true);
@@ -494,11 +534,15 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputActionMap m_Debug;
     private IDebugActions m_DebugActionsCallbackInterface;
     private readonly InputAction m_Debug_Hit;
+    private readonly InputAction m_Debug_CameraMove;
+    private readonly InputAction m_Debug_CameraReset;
     public struct DebugActions
     {
         private @PlayerControls m_Wrapper;
         public DebugActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Hit => m_Wrapper.m_Debug_Hit;
+        public InputAction @CameraMove => m_Wrapper.m_Debug_CameraMove;
+        public InputAction @CameraReset => m_Wrapper.m_Debug_CameraReset;
         public InputActionMap Get() { return m_Wrapper.m_Debug; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -511,6 +555,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Hit.started -= m_Wrapper.m_DebugActionsCallbackInterface.OnHit;
                 @Hit.performed -= m_Wrapper.m_DebugActionsCallbackInterface.OnHit;
                 @Hit.canceled -= m_Wrapper.m_DebugActionsCallbackInterface.OnHit;
+                @CameraMove.started -= m_Wrapper.m_DebugActionsCallbackInterface.OnCameraMove;
+                @CameraMove.performed -= m_Wrapper.m_DebugActionsCallbackInterface.OnCameraMove;
+                @CameraMove.canceled -= m_Wrapper.m_DebugActionsCallbackInterface.OnCameraMove;
+                @CameraReset.started -= m_Wrapper.m_DebugActionsCallbackInterface.OnCameraReset;
+                @CameraReset.performed -= m_Wrapper.m_DebugActionsCallbackInterface.OnCameraReset;
+                @CameraReset.canceled -= m_Wrapper.m_DebugActionsCallbackInterface.OnCameraReset;
             }
             m_Wrapper.m_DebugActionsCallbackInterface = instance;
             if (instance != null)
@@ -518,6 +568,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Hit.started += instance.OnHit;
                 @Hit.performed += instance.OnHit;
                 @Hit.canceled += instance.OnHit;
+                @CameraMove.started += instance.OnCameraMove;
+                @CameraMove.performed += instance.OnCameraMove;
+                @CameraMove.canceled += instance.OnCameraMove;
+                @CameraReset.started += instance.OnCameraReset;
+                @CameraReset.performed += instance.OnCameraReset;
+                @CameraReset.canceled += instance.OnCameraReset;
             }
         }
     }
@@ -576,6 +632,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     public interface IDebugActions
     {
         void OnHit(InputAction.CallbackContext context);
+        void OnCameraMove(InputAction.CallbackContext context);
+        void OnCameraReset(InputAction.CallbackContext context);
     }
     public interface ISceneResetActions
     {

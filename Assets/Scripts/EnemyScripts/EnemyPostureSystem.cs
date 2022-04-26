@@ -13,9 +13,11 @@ public class EnemyPostureSystem : MonoBehaviour
     public float EnemyPosture = 0;
     public float enemyMaxPosture = 10;
 
-    float PostureTimer =0;
+    float PostureTimer = 0;
     float PostureCoolDown = 2;
 
+    //to find the players 2nd camera to que when to move when the enemy is staggered
+    CameraMover _playerCamera;
 
     EnemyWeaponController _weaponScript;
     Animator _animation;
@@ -26,6 +28,8 @@ public class EnemyPostureSystem : MonoBehaviour
         _animation = GetComponent<Animator>();
         _postureMeterR.maxValue = enemyMaxPosture;
         _weaponScript = _weapon.GetComponent<EnemyWeaponController>();
+        _playerCamera = FindObjectOfType<CameraMover>();
+
     }
 
     private void Start()
@@ -51,6 +55,7 @@ public class EnemyPostureSystem : MonoBehaviour
         }
 
         PostureCoolDownTimer();
+        quePlayerCamera();
     }
 
     void enemyPostureSystem()
@@ -88,7 +93,7 @@ public class EnemyPostureSystem : MonoBehaviour
             Debug.Log("enemy posture time is " + PostureTimer);
         }
 
-       if (PostureTimer <= 0 && EnemyPosture > 0)
+       if (PostureTimer <= 0 && EnemyPosture > 0 && stagger == false)
         {
             EnemyPosture -= Time.deltaTime;
         }
@@ -97,6 +102,19 @@ public class EnemyPostureSystem : MonoBehaviour
         {
             PostureTimer -= Time.deltaTime;
 
+        }
+    }
+
+    void quePlayerCamera()
+    {
+        if (stagger == true)
+        {
+            _playerCamera.newCameraPosition();
+        }
+
+        if (stagger == false && _playerCamera.moveCamera == true)
+        {
+            _playerCamera.ReturnCamera();
         }
     }
 }

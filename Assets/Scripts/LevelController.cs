@@ -12,6 +12,12 @@ public class LevelController : MonoBehaviour
 
     private InputAction Reset;
     private InputAction Escape;
+
+    private void Awake()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
     private void OnEnable()
     {
         if (playerControls == null)

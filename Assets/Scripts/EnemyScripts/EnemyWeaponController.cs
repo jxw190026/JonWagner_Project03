@@ -10,6 +10,9 @@ public class EnemyWeaponController : MonoBehaviour
     public bool parrySuccessful = false;
     //call this public void when to change enemy weapon
 
+    //public bool that will equal the stagger bool from the enemy posture system script
+    //this bool will send information to the player wether to move the camera if the enemy has been staggered
+    public bool staggered = false;
     AnimatorManager _playerAnimaiton;
     private void Awake()
     {
@@ -33,6 +36,18 @@ public class EnemyWeaponController : MonoBehaviour
                 _playerAnimaiton.queParryCheck();
             }
 
+        }
+    }
+
+    private void Update()
+    {
+        if (_EnemyGO.GetComponent<EnemyPostureSystem>().stagger == true)
+        {
+            staggered = true;
+        }
+        else
+        {
+            staggered = false;
         }
     }
 
